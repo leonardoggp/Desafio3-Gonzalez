@@ -13,22 +13,22 @@ class ProductManager {
                 const data = await fs.promises.readFile(this.file, "utf-8");
                 if (data) {
                     this.products = JSON.parse(data);
-                    // Validar que todos los campos sean obligatorios
-                    if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
-                        console.log("Error: Todos los campos son obligatorios");
-                        return;
-                    }
-
-                    // Validar que no se repita el campo "code"
-                    if (this.products.find((p) => p.code === product.code)) {
-                        console.log("Error: El código ya existe");
-                        return;
-                    }
-                    // Agregar el producto con un id autoincrementable
-                    product.id = this.nextId++;
-                    this.products.push(product);
-                    await fs.promises.writeFile(this.file, JSON.stringify(this.products, null, "\t"));
                 }
+                // Validar que todos los campos sean obligatorios
+                if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
+                    console.log("Error: Todos los campos son obligatorios");
+                    return;
+                }
+
+                // Validar que no se repita el campo "code"
+                if (this.products.find((p) => p.code === product.code)) {
+                    console.log("Error: El código ya existe");
+                    return;
+                }
+                // Agregar el producto con un id autoincrementable
+                product.id = this.nextId++;
+                this.products.push(product);
+                await fs.promises.writeFile(this.file, JSON.stringify(this.products, null, "\t"));
                 console.log("Producto agregado correctamente")
             } else {
                 //Crear el archivo en caso de que no exista.
@@ -46,8 +46,8 @@ class ProductManager {
                 const data = await fs.promises.readFile(this.file, "utf-8");
                 if (data) {
                     this.products = JSON.parse(data);
-                    return this.products;
                 }
+                return this.products;
             } else {
                 console.log("No existe el archivo, por favor cree uno");
             }
@@ -64,14 +64,14 @@ class ProductManager {
                 const data = await fs.promises.readFile(this.file, "utf-8");
                 if (data) {
                     this.products = JSON.parse(data);
-                    const product = await this.products.find((p) => p.id === parseInt(id));
-
-                    if (product) {
-                        return product;
-                    } else {
-                        console.log(`Error: Producto con el id "${id}" no encontrado`);
-                    }
                 }
+                const product = await this.products.find((p) => p.id === parseInt(id));
+
+                if (product) {
+                    return product;
+                } else {
+                    console.log(`Error: Producto con el id "${id}" no encontrado`);
+                }                
             } else {
                 console.log("No existe el archivo, por favor cree uno");
             }
@@ -83,20 +83,20 @@ class ProductManager {
         try {
             if (fs.existsSync(this.file)) {
                 const data = await fs.promises.readFile(this.file, "utf-8");
-                if (data) {
+                 if (data) {
                     this.products = JSON.parse(data);
-                    const index = this.products.findIndex((p) => p.id === id);
-                    if (index !== -1) {
-                        this.products[index] = { ...this.products[index], ...product };
-                        await fs.promises.writeFile(this.file, JSON.stringify(this.products, null, "\t"));
-                        console.log("Has actualizado correctamente el producto");
-                    } else {
-                        console.log("Error: Producto no encontrado")
-                    }
-                } else {
-                    console.log("No existe el archivo, por favor cree uno");
-                }
-            }
+                 }    
+                 const index = this.products.findIndex((p) => p.id === id);
+                 if (index !== -1) {
+                     this.products[index] = { ...this.products[index], ...product };
+                     await fs.promises.writeFile(this.file, JSON.stringify(this.products, null, "\t"));
+                     console.log("Has actualizado correctamente el producto");
+                 } else {
+                     console.log("Error: Producto no encontrado")
+                 }
+            } else {
+                console.log("No existe el archivo, por favor cree uno");
+            }                
         } catch (error) {
             throw new Error("Error: ", error);
         }
