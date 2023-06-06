@@ -4,7 +4,7 @@ const app = express();
 const PORT = 3000;
 // Instancia de la clase ProductManager
 const ProductManager = require('./ClassContainer/ClassContainer');
-const manager = new ProductManager('Fede');
+const manager = new ProductManager('gonzalez');
 
 //ruta base, no tiene mucho contenido pero la dejo preparada
 app.get('/', (req, res) => {
